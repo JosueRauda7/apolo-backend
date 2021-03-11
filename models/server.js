@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.usuariosEndpoint = "/api/usuarios";
 
     // Middlewares: Función que van a ejecutarse cuando se active el servidor
     this.middlewares();
@@ -13,31 +15,19 @@ class Server {
   }
 
   middlewares() {
+    // CORS
+    this.app.use(cors());
+
+    // Lectura y parseo dle body
+    this.app.use(express.json());
+
     // Directorio público
     this.app.use(express.static("public"));
   }
 
   routes() {
-    this.app.get("/api", (req, res) => {
-      res.json({
-        msg: "Es una petición GET a una API",
-      });
-    });
-    this.app.put("/api", (req, res) => {
-      res.json({
-        msg: "Es una petición PUT a una API",
-      });
-    });
-    this.app.post("/api", (req, res) => {
-      res.json({
-        msg: "Es una petición POST a una API",
-      });
-    });
-    this.app.delete("/api", (req, res) => {
-      res.json({
-        msg: "Es una petición DELETE a una API",
-      });
-    });
+    // Con un middleware
+    this.app.use(this.usuariosEndpoint, require("../routes/usuarios"));
   }
 
   listen() {
