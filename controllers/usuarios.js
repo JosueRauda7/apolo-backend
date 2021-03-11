@@ -3,7 +3,7 @@ const { response, request } = require("express");
 const usuariosGet = (req = request, res = response) => {
   const { nombre, edad } = req.query;
 
-  if (usuario.nombre) {
+  if (nombre) {
     res.json({
       msg: "Es una petición GET a una API - controlador",
       usuario,
